@@ -1,0 +1,25 @@
+<ActionBar title="SQL App">
+    <Label [text]="trans('System Fixing', '系统修复')"></Label>
+</ActionBar>
+<StackLayout>
+    <Label class="fixingBlock" textWrap="true" [text]="trans('Data is saved in the local database for performance issue. It is possible that some data is crushed and prevent the application from running accurately. In this case, please click below button to fix the database.','为了使此应用程序可以最快运行，我们将此应用所需要的数据存在用户本地数据库。如果数据损坏，将影响程序正常运行。如遇此状况，请点击以下按钮修复程序。')"></Label>
+
+    <Label class="fixingBlock" textWrap="true" [text]="trans('Step 1. Clear Feed Data, system will reload data from server. It is absolutely safe and no impact for you at all.','第一步：删除每日灵修RSS Feed数据，系统将重新加载数据。此步骤完全安全，用户数据将得以保留。')"></Label>
+
+    <Button class="fixingBlock" [text]="trans('Fix QT (Quiet Time) Data','修复每日灵修应用数据')"
+        (tap)="cleanDB()"></Button>
+
+    <Label class="fixingBlock" textWrap="true" [text]="trans('Step 2. Clear Customer Data. If first step does not work, this step will remove customer data. In this step, all your favorite and notes will be remved!','第二步：如果以上步骤无效，请删除用户数据，此步骤将删除所有用户数据，包括喜爱经文及笔记。请确认后再删除。')"></Label>
+
+    <Button class="fixingBlock" [text]="trans('Fix QT User Data','修复每日灵修用户数据')"
+    (tap)="cleanCustomDB()"></Button>
+
+    <Label class="fixingBlock" [text]="msg"></Label>
+    
+<!--
+<Button class="fixingBlock" [text]="trans('Start User Data Backup','开始用户数据备份')"
+(tap)="backup()"></Button>
+-->
+
+
+</StackLayout>

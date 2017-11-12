@@ -1,0 +1,13 @@
+.homeStackLayout{
+   vertical-align: top;
+   margin-top: 50;
+}
+.lblTitle{
+   font-weight:bold;
+   width: 100%;
+   text-align: center;
+   margin-bottom: 50px;
+}
+.layoutTitle{
+	background-color: black;
+}

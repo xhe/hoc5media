@@ -1,0 +1,12 @@
+<StackLayout class='stkFilterPopupList'>
+	<Label text="请选择灵修书目" class="lblTitle"></Label>
+	<ListView [items]="bookList" (itemTap)="onItemTap($event)">
+		<ng-template let-item="item" class='itemBlock' let-odd="odd" let-even="even">
+			<StackLayout orientation="horizontal" [class.odd]="odd" [class.even]="even" class="itemBlock">
+				<Label [text] = "item.name" ></Label>
+				<Label [text]="item.selected?'&#xf26a;':'&#xf279;'" class="material-icon lblChkIcon"></Label>
+			</StackLayout>
+		</ng-template>
+	</ListView>
+	<Button text="提交" (tap)="submit()" class='btn btn-primary btnSubmit'></Button>
+</StackLayout>

@@ -1,0 +1,132 @@
+
+<ActionBar [title]="title">
+    <ActionItem (tap)="openDrawer()"
+    ios.position="right"
+    android.position="actionBar"
+    visibility="{{ rssType=='qt' ? 'visible':'hidden'}}"
+    >
+    <Label text="&#xf197;" class="material-icon lblChkIcon lblChkIconPosition"></Label>
+</ActionItem>
+</ActionBar>
+
+
+
+<RadSideDrawer tkExampleTitle tkToggleNavButton>
+    <StackLayout tkDrawerContent class="sideStackLayout">
+        <StackLayout visibility="{{ rssType=='qt' ? 'visible':'hidden'}}">
+
+            <StackLayout orientation="horizontal">
+                <Label [text]="trans('My favorite scripture', '我喜爱的经文' )" class="sideLabel sideLightGrayLabel" (tap)="showMyFavorite()"></Label>
+                <Label [text]="mode=='favorite'?'&#xf26a;':'&#xf279;'" (tap)="showMyFavorite()" class="material-icon sideLabel sideLightGrayLabel"></Label>
+            </StackLayout>
+            <StackLayout orientation="horizontal">
+                <Label [text]="trans('My noted scripture', '灵修笔记的经文' )" class="sideLabel sideLightGrayLabel" (tap)="showMyNoted()"></Label>
+                <Label [text]="mode=='noted'?'&#xf26a;':'&#xf279;'" (tap)="showMyNoted()" class="material-icon sideLabel sideLightGrayLabel"></Label>
+            </StackLayout>
+            <StackLayout >
+                <Label [text]="trans('Search QT Contents', '搜索每日灵修' )"></Label>
+                <Label [text]="selectedBooks.length==0?'By Book': selectedBooks.join(',') " class="sideLabel sideLightGrayLabel" (tap)="showBooks()" ></Label>
+            </StackLayout>
+            <StackLayout >
+                <Label [text]="dateString==''?'By Date':dateString" class="sideLabel sideLightGrayLabel" (tap)="showDatePicker()"></Label>
+            </StackLayout>
+
+            <StackLayout orientation="horizontal" >
+                <Label [text]="trans('Apply', '确认')" class="sideLabel sideLightGrayLabel" (tap)="onApplyFilter()"></Label>
+                <Label [text]="trans('Cancel', '取消' )" class="sideLabel sideLightGrayLabel leftMargin50" (tap)="onCancelFilter()"></Label>
+            </StackLayout>
+
+            <StackLayout>
+                <Label [text]="trans('System Fixing', '系统修复')"
+                class="sideLabel sideLightGrayLabel"
+                [nsRouterLink]="['/db']"
+                ></Label>
+            </StackLayout>
+
+        </StackLayout>
+
+    </StackLayout>
+
+
+
+    <StackLayout tkMainContent>
+        <GridLayout  rows="auto, *">
+
+            <StackLayout orientation="vertical" class='caption'>
+                <StackLayout orientation="horizontal" >
+                    <Image [src]="channel.image.url"
+                    stretch="aspectFill" width=100 height=100></Image>
+                    <Label text="{{channel.title}}" class='title' textWrap="true"></Label>
+                </StackLayout>
+                <Label text="{{channel.description}}" textWrap="true" class="content"></Label>
+            </StackLayout>
+
+
+            <RadListView  #myListView
+            row="1" [items]="rssItems"
+            visibility="{{loading ? 'collapse':'visible'}}"
+            (itemTap)="onItemTap($event)"
+
+            loadOnDemandMode="Auto"
+            loadOnDemandBufferSize=2
+            (loadMoreDataRequested)="onLoadMoreItemsRequested($event)"
+
+            (itemSwipeProgressStarted)="onSwipeCellStarted($event)"
+            swipeActions="{{ rssType=='qt' ? true:false}}"
+            >
+            <ng-template tkListItemTemplate let-item="item" let-odd="odd" let-even="even">
+                <StackLayout class='itemBlock' [class.odd]="odd" [class.even]="even" class="itemBlock">
+                    <Label [text]="trans('Todays\'s QT', '今日灵修' )" visibility="{{item.isTodayPublished()? 'visible':'collapse'}}" class='todayqt'></Label>
+                    <DockLayout stretchLastChild="false">
+
+                        <StackLayout dock="right"  orientation='horizontal' visibility="{{ rssType=='qt' ? 'visible':'hidden'}}">
+                            <!-- favorite -->
+                            <Label text="&#xf15f;" marginLeft="10" [visibility]="favorited(item)?'visible':'collapse'" class="material-icon favorite red"></Label>
+                            <!-- favorite-outline -->
+                            <Label text="&#xf15e;" marginLeft="10" [visibility]="favorited(item)?'collapse':'visible'" class="material-icon favorite"></Label>
+
+                            <!-- note -->
+                            <Label text="&#xf263;" marginLeft="10" [visibility]="noted(item)?'visible':'collapse'" class="material-icon black red"></Label>
+                            <!-- note-outline -->
+                            <Label text="&#xf261;" marginLeft="10" [visibility]="noted(item)?'collapse':'visible'" class="material-icon black"></Label>
+
+
+
+                        </StackLayout>
+
+
+                        <Label text= "{{item?item['title']:'' }}" class='title' textWrap="true"></Label>
+                    </DockLayout>
+
+                    <Label text= "{{item?item['subTitle']:''}}" textWrap="true" class="content"></Label>
+                </StackLayout>
+            </ng-template>
+            <GridLayout *tkListItemSwipeTemplate columns="*, auto" class="gridLayoutLayout" >
+                <GridLayout columns="*, *, *" col="1" id="right-stack" height="100%">
+
+                    <StackLayout col="0" class="emailGridLayout" (tap)="onRightSwipeClick($event)" id="btnEmailShare">
+                        <Label [text]="trans('Email', '邮件' )" class="swipetemplateLabel" verticalAlignment="center" horizontalAlignment="center"></Label>
+                        <Label text="&#xf15a;" class="material-icon emailIcon"></Label>
+                    </StackLayout>
+
+                    <StackLayout col="1" class="noteGridLayout" (tap)="onRightSwipeClick($event)" id="btnNote">
+                        <Label [text]="trans('Note', '笔记' )" class="swipetemplateLabel" verticalAlignment="center" horizontalAlignment="center"></Label>
+                        <Label text="&#xf263;" class="material-icon"></Label>
+                    </StackLayout>
+
+                    <StackLayout col="2" class="favoriteGridLayout" (tap)="onRightSwipeClick($event)" id="btnFavorite">
+                        <Label [text]="trans('Favorite', '喜爱' )" text="" class="swipetemplateLabel" verticalAlignment="center" horizontalAlignment="center"></Label>
+                        <Label text="&#xf15f;" class="material-icon favoriteIcon"></Label>
+                    </StackLayout>
+
+
+                </GridLayout>
+
+            </GridLayout>
+        </RadListView>
+
+        <ActivityIndicator [busy]="loading" [visibility]="loading ? 'visible' : 'collapse'" row="1" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
+
+    </GridLayout>
+</StackLayout>
+</RadSideDrawer>

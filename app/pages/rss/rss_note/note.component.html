@@ -1,0 +1,33 @@
+<ScrollView  id="sv">
+<GridLayout rows="auto, *, auto">
+    <StackLayout class="input-field" row="0">
+        <Label text="Add Note Here" class="caption"></Label>
+        <Label [text]="rssItem.title" textWrap="true" class="scriptTitle"></Label>
+        <Label [text]="rssItem.subTitle" textWrap="true" class="scriptTitle"></Label>
+        <Label text="Title" class='title'></Label>
+        <Border borderRadius="5" borderWidth="1" borderColor="#eee" margin="5">
+            <TextField hint="enter title here" [(ngModel)]="title"></TextField>
+        </Border>
+
+    </StackLayout>
+
+    <StackLayout row="1">
+        <Label text="Content" class='title'></Label>
+        <Border borderRadius="5" borderWidth="1" borderColor="#eee" margin="5">
+            <TextView hint="Enter some text" row="1"
+            returnKeyType="send"
+            (returnPress)="submit($event)"
+            [editable]="true"
+            [(ngModel)]="note"
+            class="input input-border"></TextView>
+        </Border>
+    </StackLayout>
+
+    <StackLayout row="2" orientation='horizontal' horizontalAlignment='center'>
+        <Button class="btn btn-primary btn-active" text="Submit"
+        (tap)="save()"    ></Button>
+        <Button class="btn btn-primary btn-active" text="Cancel"
+        (tap)="back()"     ></Button>
+    </StackLayout>
+</GridLayout>
+</ScrollView>

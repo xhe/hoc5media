@@ -1,0 +1,12 @@
+.caption .title {
+	font-weight: bold;
+	text-align:  left;
+    vertical-align: middle;
+	margin-left: 40px;
+	width:100%;
+	font-size: 20;
+}
+
+.lblChkIconPosition{
+    padding-right: 30px;
+}

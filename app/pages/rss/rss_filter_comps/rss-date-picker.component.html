@@ -1,0 +1,16 @@
+<StackLayout class="modal-view-style" sdkExampleTitle sdkToggleNavButton>
+
+    <Label text="Select Date Type" class='lblTitle'></Label>
+
+    <ListPicker height="200px" [items]="dateOptions" selectedIndex="0" (selectedIndexChange)="selectedIndexChanged($event)" class="p-15"></ListPicker>
+
+    <Button text="Click to Select First Date: {{selectedDate1}}" class='btn btn-primary btn-align-left' (tap)="showCalendar('date1')"></Button>
+
+    <Button text="Click to Select Second Date: {{selectedDate2}}"  class='btn btn-primary btn-align-left' visibility="{{ selectedDateOption==='Between' ? 'visible' : 'collapse'}}"  (tap)="showCalendar('date2')"></Button>
+
+    <DatePicker id="datePicker" (dateChange)="onDateChanged($event)"></DatePicker>
+
+    <Button class="btn btn-primary btn-active" text="Submit" (tap)="submit()"></Button>
+
+    <Button class="btn btn-primary btn-active" text="Cancel" (tap)="cancel()"></Button>
+</StackLayout>

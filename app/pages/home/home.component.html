@@ -1,0 +1,38 @@
+<ScrollView>
+
+	<StackLayout orientation='vertical'>
+
+		<StackLayout class='layoutTitle'>
+			<Image left="0" top="0" src="~/images/logo-hoc5-560px1.png"></Image>
+		</StackLayout>
+
+		<StackLayout  class="homeStackLayout">
+			<Label [text]="trans('Welcome to use HOC5\nmedias player!', '欢迎使用基督之家第五家\n媒体播放器')" textWrap="true"  class="lblTitle"></Label>
+			<Button class="btn btn-primary btn-active" [text]="trans('QT (Quiet Time)', 'QT (每日灵修)' )"
+			[nsRouterLink]="['/rss/qt']"></Button>
+			<Button class="btn btn-primary btn-active" [text]="trans('Chinese Sermons', '中文堂讲道' )"
+			[nsRouterLink]="['/rss/weekly_zh']"></Button>
+			<Button class="btn btn-primary btn-active" [text]="trans('English Sermons', '英文堂讲道' )"
+			[nsRouterLink]="['/rss/weekly_en']"></Button>
+			<Button class="btn btn-primary btn-active" [text]="trans('Sisters Worships', '姐妹团契' )"
+			[nsRouterLink]="['/rss/sister']"></Button>
+
+			<!-- http://zavoloklom.github.io/material-design-iconic-font/cheatsheet.html -->
+			<!-- <Button text="&#xf129; DataBase" class="material-icon"
+			[nsRouterLink]="['/db']"></Button> -->
+
+			<StackLayout orientation="horizontal" horizontalAlignment='center' verticalAlignment='center'>
+
+				<Label [text]="trans('English', '英文' )" class='lblLanguage'></Label>
+				<Switch class="m-15" [checked]="lang=='zh'"
+				(checkedChange)="changeLanguage($event)">
+			</Switch>
+			<Label [text]="trans('Chinese', '中文' )" class='lblLanguage'></Label>
+
+		</StackLayout>
+
+	</StackLayout>
+
+</StackLayout>
+
+</ScrollView>

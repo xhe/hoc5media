@@ -1,0 +1,28 @@
+.m-20{
+	height: 20px;
+}
+GridLayout{
+	padding: 10;
+}
+.title{
+	font-weight: bold;
+	text-align: center;
+	margin-bottom: 10;
+
+}
+h1{ font-size: 14; }
+
+
+.inactive{
+	background-color: #ccc;
+	color: white;
+}
+
+.noteTitle{
+	font-weight: bold;
+	text-align: center;
+}
+.noteContent{
+	margin-top: 20px;
+	padding: 10px;
+}

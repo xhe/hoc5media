@@ -1,0 +1,135 @@
+StackLayout {
+	padding: 10;
+}
+
+.lblChkIcon{
+	font-size: 30px;
+}
+
+.caption .content {
+
+}
+
+.itemBlock .title {
+	font-weight: bold;
+}
+
+.itemBlock .content {
+
+}
+
+.itemBlock .todayqt {
+	color: red;
+	font-style: italic;
+	font-weight: bold;
+}
+
+.itemBlock .stkItemTitle{
+	padding: 0px;
+	margin: 0px;
+}
+
+.itemBlock .stkItemTitle .favorite{
+	text-align: right;
+	font-size: 12px;
+}
+
+.red{
+	color:#ff0000;
+}
+
+.black{
+	color:#000;
+}
+
+.odd {
+	background-color: white;
+}
+
+.even {
+	background-color: #eee;
+}
+
+.stkCenterAlign{
+	width:100%;
+	horizontal-align: center;
+}
+.leftMargin50{
+	 margin-left: 50px;
+}
+.lblButton{
+	height: 40px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/*swipe actions style*/
+
+.gridLayoutLayout {
+    background-color: white;
+}
+
+.swipetemplateLabel {
+    size: 20;
+}
+
+.emailGridLayout{
+	background-color: orange;
+    padding: 16;
+	text-align: center;
+}
+.emailIcon{
+	
+}
+
+
+.favoriteGridLayout {
+	background-color: green;
+    padding: 16;
+	text-align: center;
+}
+.favoriteIcon{
+	 color: red;
+}
+.noteGridLayout{
+	background-color: #0099ff;
+    padding: 16;
+	text-align: center;
+}
+
+/*end of swipe actions style*/
+
+/*sideDrawer Style*/
+button {
+	font-size: 15;
+	horizontal-align: center;
+}
+
+.drawerContentText {
+	font-size: 13;
+	padding: 10;
+}
+
+.drawerContentButton {
+	margin: 10;
+	horizontal-align: left;
+}
+
+.sideStackLayout {
+	background-color: gray;
+}
+
+.sideTitleStackLayout {
+	margin-top: 20px;
+	height: 56;
+	text-align: center;
+	vertical-align: center;
+}
+
+.sideLabel {
+	padding: 10;
+}
+
+.sideLightGrayLabel {
+	background-color: lightgray;
+}

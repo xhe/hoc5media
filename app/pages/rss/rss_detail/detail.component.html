@@ -1,0 +1,58 @@
+<ScrollView>
+
+	<GridLayout rows="auto, *">
+
+		<StackLayout row="0">
+			<Label text="{{item.title}}" class="title" textWrap="true"></Label>
+			<Label text="{{item.subTitle}}" textWrap="true"></Label>
+
+			<GridLayout columns="*,*">
+
+				<Button col="0" row="0" text={{btnTitle}} (tap)="togglePlay()" visibility="{{loaded ? 'visible':'hidden'}}" class='btn btn-primary'></Button>
+
+				<!-- <Label col="0" row="0" [text]="btnTitle=='Pause'?'&#xf3a7;':'&#xf3aa;'"
+				(tap)="togglePlay()" visibility="{{loaded ? 'visible':'hidden'}}"
+				class='material-icon btn-primary btn-play'></Label> -->
+
+				<ActivityIndicator visibility="{{loaded ? 'hidden':'visible'}}"  col="0" row="0" busy="true" width="100" height="50" class="activity-indicator"></ActivityIndicator>
+				<Label col="1" row="0" width="50%" text="{{currentTime_s}} / {{totalLength_s}} " class='lblProgress'></Label>
+			</GridLayout>
+
+			<Progress [value]="progressValue" height="20" maxValue="100" class="m-20"></Progress>
+			<!-- <Slider  [value]="progressValue" (valueChange)="onSliderValueChange($event)" minValue="0" maxValue="100"></Slider> -->
+
+		</StackLayout>c
+
+		<StackLayout row="1" visibility="{{ rssType=='qt'  ? 'visible' : 'collapse'}}">
+			<!--
+			<StackLayout orientation="horizontal" horizontalAlignment="center" >
+				<Button [text]="trans('Social Share','社交分享')" (tap)="share('social')" class='btn btn-primary' ></Button>
+				<Button [text]="trans('Email Share','邮件分享')" (tap)="share('email')" class='btn btn-primary' ></Button>
+			</StackLayout>
+			-->
+
+			<StackLayout orientation="horizontal" >
+				<Button [text]="trans('scripture','经文')" (tap)="show('scripture')" class='btn' [ngClass]="{'btn-primary':showType==='scripture', 'inactive': showType!=='scripture'}" ></Button>
+				<Button [text]="trans('Share','分享')" (tap)="show('share')" class='btn' [ngClass]="{'btn-primary':showType==='share', 'inactive': showType!=='share'}"></Button>
+				<Button [text]="trans('Note','笔记')" (tap)="show('note')" class='btn' [ngClass]="{'btn-primary':showType==='note', 'inactive': showType!=='note'}"></Button>
+
+			</StackLayout>
+			<ScrollView  orientation="vertical" visibility="{{ showType==='scripture' ? 'visible' : 'collapse'}}" sdkExampleTitle sdkToggleNavButton>
+				<HtmlView html="{{ item.scripture }}" ></HtmlView>
+			</ScrollView>
+			<ScrollView  orientation="vertical" visibility="{{ showType==='share' ? 'visible' : 'collapse'}}" sdkExampleTitle sdkToggleNavButton>
+				<HtmlView html="{{ item.summary }}" ></HtmlView>
+			</ScrollView>
+			<ScrollView  orientation="vertical" visibility="{{ showType==='note' ? 'visible' : 'collapse'}}" sdkExampleTitle sdkToggleNavButton>
+				<StackLayout>
+					<Label text={{customItem.title}} class='noteTitle'></Label>
+					<Label text={{customItem.note}} class='noteContent' ></Label>
+					<Button text="Add Note" class='btn btn-primary' (tap)="addNote()"></Button>
+				</StackLayout>
+			</ScrollView>
+		</StackLayout>
+
+
+	</GridLayout>
+
+</ScrollView>
