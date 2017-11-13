@@ -5,8 +5,9 @@ import { Page } from "ui/page";
 import { ListPicker } from "ui/list-picker";
 
 @Component({
-    templateUrl: "pages/rss/rss_filter_comps/rss-date-picker.component.html",
-    styleUrls: ['pages/rss/rss_filter_comps/rss-date-picker.component.common.css'],
+    moduleId: module.id,
+    templateUrl: "./rss-date-picker.component.html",
+    styleUrls: ['./rss-date-picker.component.common.css'],
 })
 export class RssDataPickerComponent implements OnInit{
 

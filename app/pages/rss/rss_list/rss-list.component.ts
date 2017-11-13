@@ -19,8 +19,9 @@ import {RssDataPickerComponent} from '../rss_filter_comps/rss-date-picker.compon
 import {Page} from 'ui/page';
 
 @Component({
-    styleUrls: ['pages/rss/rss_list/rss-list-common.css', 'pages/rss/rss_list/rss-list.css'],
-    templateUrl: 'pages/rss/rss_list/rss-list.component.html'
+    moduleId: module.id,
+    styleUrls: ['./rss-list-common.css', './rss-list.css'],
+    templateUrl: './rss-list.component.html'
 })
 export class RssListComponent implements OnInit, AfterViewInit {
     rssType: string;
@@ -261,7 +262,7 @@ export class RssListComponent implements OnInit, AfterViewInit {
 
             }else if(args.object.id=='btnEmailShare'){
                 this.rssService.retrieveRssItemFor('qt', index, item => {
-                    
+
                     console.log("Email share for it");
                     //now go to note page here
                     this.rssService.share('email', item);

@@ -16,8 +16,9 @@ import {Page} from 'ui/page';
 import * as htmlViewModule from "tns-core-modules/ui/html-view";
 
 @Component({
-    styleUrls: ['pages/rss/rss_detail/detail.component.css', 'pages/rss/rss_detail/detail.css'],
-    templateUrl: 'pages/rss/rss_detail/detail.component.html'
+    moduleId: module.id,
+    styleUrls: ['./detail.component.css', './detail.css'],
+    templateUrl: './detail.component.html'
 })
 export class RssDetailComponent {
 

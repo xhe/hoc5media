@@ -6,8 +6,9 @@ import {Rss, Channel, ChannelImage, Item, CustomItem} from '../../../shared/enti
 import {RouterExtensions} from "nativescript-angular/router";
 
 @Component({
-    styleUrls: ['pages/rss/rss_note/note.component.css', 'pages/rss/rss_note/note.css'],
-    templateUrl: 'pages/rss/rss_note/note.component.html'
+    moduleId: module.id,
+    styleUrls: ['./note.component.css', './note.css'],
+    templateUrl: './note.component.html'
 })
 export class RssNoteComponent {
 

@@ -86,8 +86,8 @@ module.exports = env => {
 
 function getPlatform(env) {
     return env.android ? "android" :
-        env.ios ? "ios" :
-        () => { throw new Error("You need to provide a target platform!") };
+    env.ios ? "ios" :
+    () => { throw new Error("You need to provide a target platform!") };
 }
 
 function getRules() {
@@ -176,7 +176,7 @@ function getPlugins(platform, env) {
             "./vendor",
             "./bundle",
         ]),
-        
+
         // Support for web workers since v3.2
         new NativeScriptWorkerPlugin(),
 
@@ -204,6 +204,15 @@ function getPlugins(platform, env) {
             resolveTemplateUrl: true
         }),
 
+        // new ChunkManifestPlugin({
+        //     filename: 'chunk-manifest.json',
+        //     inlineManifest: true,
+        //     manifestVariable: 'webpackManifest'
+        // }),
+        //
+        // new InlineManifestWebpackPlugin({
+        //     name: 'webpackManifest'
+        // })
     ];
 
     if (env.uglify) {

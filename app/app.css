@@ -1,1 +1,5 @@
-@import "nativescript-theme-core/css/core.light.css";
+@import 'nativescript-theme-core/css/core.light.css';
+
+.material-icon {
+	font-family: 'Material-Design-Iconic-Font';
+}

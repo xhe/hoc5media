@@ -16,7 +16,6 @@
         <Border borderRadius="5" borderWidth="1" borderColor="#eee" margin="5">
             <TextView hint="Enter some text" row="1"
             returnKeyType="send"
-            (returnPress)="submit($event)"
             [editable]="true"
             [(ngModel)]="note"
             class="input input-border"></TextView>

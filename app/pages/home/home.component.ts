@@ -4,8 +4,9 @@ import {RssService} from '../../shared/services/rss.service';
 import {ConfigService} from '../../shared/utilities/config.service';
 
 @Component({
-    templateUrl: "./pages/home/home.component.html",
-    styleUrls: ['./pages/home/home.component.css', './pages/home/home.css']
+    moduleId: module.id,
+    templateUrl: "./home.component.html",
+    styleUrls: ['./home.component.css', './home.css']
 })
 export class HomeComponent {
 

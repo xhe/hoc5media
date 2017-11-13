@@ -6,10 +6,16 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { NativeScriptUISideDrawerModule } from "nativescript-pro-ui/sidedrawer/angular";
 import { NativeScriptUIListViewModule } from "nativescript-pro-ui/listview/angular";
 
+//import { NativeScriptUICalendarModule  } from "nativescript-pro-ui/calendar/angular";
+// import { NativeScriptUIChartModule } from "nativescript-pro-ui/chart/angular";
+// import { NativeScriptUIDataFormModule } from "nativescript-pro-ui/dataform/angular";
+// import { NativeScriptUIAutoCompleteTextViewModule } from "nativescript-pro-ui/autocomplete/angular";
+// import { NativeScriptUIGaugesModule } from "nativescript-pro-ui/gauges/angular";
+
+
 import { AppComponent } from "./app.component";
 import { routes, navigatableComponents, entryComponents } from "./app.routing";
 import {SharedModule} from "./shared/shared.module";
-
 
 @NgModule({
     imports: [NativeScriptModule, NativeScriptFormsModule, NativeScriptHttpModule,
@@ -22,6 +28,8 @@ import {SharedModule} from "./shared/shared.module";
     declarations: [AppComponent, ...navigatableComponents],
     bootstrap: [AppComponent],
     entryComponents: [...entryComponents],
-    schemas: [NO_ERRORS_SCHEMA],
+    schemas: [ NO_ERRORS_SCHEMA ]
 })
-export class AppModule {}
+export class AppModule {
+
+}

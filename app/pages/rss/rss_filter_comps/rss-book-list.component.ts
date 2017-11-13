@@ -4,8 +4,9 @@ import { Page } from "ui/page";
 import {RssService} from '../../../shared/services/rss.service';
 
 @Component({
-    templateUrl: 'pages/rss/rss_filter_comps/rss-book-list.component.html',
-    styleUrls: ['pages/rss/rss_filter_comps/filter.common.css'],
+    moduleId: module.id,
+    templateUrl: './rss-book-list.component.html',
+    styleUrls: ['./filter.common.css'],
 })
 export class RssBookListComponent implements OnInit {
 

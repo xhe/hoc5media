@@ -6,8 +6,9 @@ import {CustomDbService} from '../../shared/services/custom_db.service';
 import { confirm } from "ui/dialogs";
 
 @Component({
-    templateUrl: "pages/home/db.component.html",
-    styleUrls: ['./pages/home/db.component.css']
+    moduleId: module.id,
+    templateUrl: "./db.component.html",
+    styleUrls: ['./db.component.css']
 })
 export class DBComponent implements OnInit {
     msg:string;
