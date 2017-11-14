@@ -75,7 +75,7 @@
             swipeActions="{{ rssType=='qt' ? true:false}}"
             >
             <ng-template tkListItemTemplate let-item="item" let-odd="odd" let-even="even">
-                <StackLayout class='itemBlock' [class.odd]="odd" [class.even]="even" class="itemBlock">
+                <StackLayout class='itemBlock' [class.odd]="odd" [class.even]="even"  class="itemBlock">
                     <Label [text]="trans('Todays\'s QT', '今日灵修' )" visibility="{{item.isTodayPublished()? 'visible':'collapse'}}" class='todayqt'></Label>
                     <DockLayout stretchLastChild="false">
 

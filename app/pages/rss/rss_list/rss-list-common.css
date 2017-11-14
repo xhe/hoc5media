@@ -50,6 +50,7 @@ StackLayout {
 	background-color: #eee;
 }
 
+
 .stkCenterAlign{
 	width:100%;
 	horizontal-align: center;
@@ -79,7 +80,7 @@ StackLayout {
 	text-align: center;
 }
 .emailIcon{
-	
+
 }
 
 

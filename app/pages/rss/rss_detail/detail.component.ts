@@ -46,6 +46,7 @@ export class RssDetailComponent {
 
     lastChangeTS:number;
 
+    pageLoaded: boolean;
 
     constructor(private router: Router,
         private activatedRoute: ActivatedRoute,
@@ -53,6 +54,8 @@ export class RssDetailComponent {
         private page:Page) {
 
             this.loaded = false;
+            this.pageLoaded = false;
+
             this.progressValue = 0;
             this._player = new TNSPlayer();
             this.currentTime_s = '0:00';
@@ -69,74 +72,82 @@ export class RssDetailComponent {
                 __this._updateRssItem();
             });
 
-            this.activatedRoute.params
-            .forEach((params) => {
-                this.rssType = params['rssType'];
-                this.rssItemIndex = params['index'];
-                console.log( 'indetail page: ', this.rssType, this.rssItemIndex);
-                this.rssService.retrieveRssItemFor(this.rssType, this.rssItemIndex, item => {
-                    console.log('item is:');
-                    this.item = item;
 
-                    //now, let's fetch custom note
-                    this.rssService.getNotedItemFor(item.uuid, customItems=>{
-                        if(customItems.length>0){
-                            this.customItem = customItems[0];
-                        }
-                    });
+            setTimeout(()=>{
+                this.activatedRoute.params
+                .forEach((params) => {
+                    this.rssType = params['rssType'];
+                    this.rssItemIndex = params['index'];
+                    console.log( 'indetail page: ', this.rssType, this.rssItemIndex);
+                    this.rssService.retrieveRssItemFor(this.rssType, this.rssItemIndex, item => {
+                        console.log('item is:');
+                        this.item = item;
 
-                    this._player.initFromUrl({
-                        audioFile: this.item.enclosure_link,
-                        loop: false,
-                        completeCallback: this._trackComplete.bind(this),
-                        errorCallback: this._trackError.bind(this),
-                        infoCallback: this._infoCallback.bind(this)
-                    }).then(() => {
-                        this._player.getAudioTrackDuration().then((duration) => {
-                            this._player.volume = 1;
-                            // iOS: duration is in seconds
-                            // Android: duration is in milliseconds
-                            var duration_i: number = parseInt(duration);
-
-                            if (this.platform == 'android') {
-                                duration_i = duration_i / 1000;
+                        //now, let's fetch custom note
+                        this.rssService.getNotedItemFor(item.uuid, customItems=>{
+                            if(customItems.length>0){
+                                this.customItem = customItems[0];
                             }
+                        });
 
-                            this.totalLength = duration_i;
-                            this.totalLength_s = this._convertTS(duration_i);
+                        this.pageLoaded = true;
 
-                            this.loaded = true;
-                            this.showPlayBtn = 'visible';
-                            this.timerId = timer.setInterval(() => {
-                                var currentTime: number = Math.floor(this._player.currentTime);
+                        this._player.initFromUrl({
+                            audioFile: this.item.enclosure_link,
+                            loop: false,
+                            completeCallback: this._trackComplete.bind(this),
+                            errorCallback: this._trackError.bind(this),
+                            infoCallback: this._infoCallback.bind(this)
+                        }).then(() => {
+                            this._player.getAudioTrackDuration().then((duration) => {
+                                this._player.volume = 1;
+                                // iOS: duration is in seconds
+                                // Android: duration is in milliseconds
+                                var duration_i: number = parseInt(duration);
+
                                 if (this.platform == 'android') {
-                                    currentTime = currentTime / 1000;
+                                    duration_i = duration_i / 1000;
                                 }
-                                console.log(currentTime+' --- '+this.totalLength);
-                                if (currentTime < this.totalLength-1) {
-                                    console.log('pos 1 ');
-                                    this.currentTime = currentTime;
-                                    this.currentTime_s = this._convertTS(currentTime);
-                                    this.progressValue = (this.currentTime / this.totalLength) * 100;
-                                } else {
-                                    console.log(' pos 2 ');
-                                    //timer.clearInterval(this.timerId);
-                                    // this._player.seekTo(0);
-                                    // this._player.pause();
-                                    this.btnTitle = this.rssService.trans("Start", "开始");
-                                }
-                            }, 1000);
 
-                            this.audioInitiated = true;
+                                this.totalLength = duration_i;
+                                this.totalLength_s = this._convertTS(duration_i);
+
+                                this.loaded = true;
+                                this.showPlayBtn = 'visible';
+
+                                this.timerId = timer.setInterval(() => {
+                                    var currentTime: number = Math.floor(this._player.currentTime);
+                                    if (this.platform == 'android') {
+                                        currentTime = currentTime / 1000;
+                                    }
+                                    console.log(currentTime+' --- '+this.totalLength);
+                                    if (currentTime < this.totalLength-1) {
+                                        console.log('pos 1 ');
+                                        this.currentTime = currentTime;
+                                        this.currentTime_s = this._convertTS(currentTime);
+                                        this.progressValue = (this.currentTime / this.totalLength) * 100;
+                                    } else {
+                                        console.log(' pos 2 ');
+                                        //timer.clearInterval(this.timerId);
+                                        // this._player.seekTo(0);
+                                        // this._player.pause();
+                                        this.btnTitle = this.rssService.trans("Start", "开始");
+                                    }
+                                 }, 1000);
+
+
+                                this.audioInitiated = true;
+                            });
+
+
 
                         });
+
                     });
-
-
                 });
+            }, 0);
 
 
-            });
 
 
             this.btnTitle = this.rssService.trans("Start", "开始");
@@ -154,12 +165,14 @@ export class RssDetailComponent {
         }
 
         ngOnDestroy() {
+            timer.clearInterval(this.timerId);
+
             if (this.audioInitiated){
                 console.log('distroy the player');
                 this._player.dispose();
                 this._player = null;
             }
-            timer.clearInterval(this.timerId);
+
         }
 
         togglePlay() {
