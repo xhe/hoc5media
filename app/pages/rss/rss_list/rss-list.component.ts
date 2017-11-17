@@ -248,12 +248,14 @@ export class RssListComponent implements OnInit, AfterViewInit {
             if(args.object.class=='favoriteGridLayout'){
                 this.rssService.favoriteItem(uuid, (favorited)=>{
                     this.rssItems[index]['favorited'] = favorited;
-                    //update favorited items here
-                    this._updateFavoritedItems( ()=>{
-                        console.log("Button clicked: " + args.object.id + " for item with index: " + index);
-                        this.listViewComponent.listView.notifySwipeToExecuteFinished();
-                        //this.listViewComponent.listView.items[index].refresh();
-                    } );
+                    this.listViewComponent.listView.notifySwipeToExecuteFinished();
+                    //
+                    // //update favorited items here
+                    // this._updateFavoritedItems( ()=>{
+                    //     console.log("Button clicked: " + args.object.id + " for item with index: " + index);
+                    //     this.listViewComponent.listView.notifySwipeToExecuteFinished();
+                    //     //this.listViewComponent.listView.items[index].refresh();
+                    // } );
                 });
             }else if(args.object.class=='noteGridLayout'){
                 console.log("write note for it");
@@ -276,11 +278,22 @@ export class RssListComponent implements OnInit, AfterViewInit {
 
         private _updateFavoritedItems(cb=null){
 
-            
-
             console.log( '_updateFavoritedItems ');
+            // this.rssService.getAllMyFavoritedItemSimplified(this.rssType, items=>{
+            //     this._favoritedItems = items;
+            //     if(cb) cb();
+            // });
+
             this.rssService.getAllMyFavoritedItemSimplified(this.rssType, items=>{
-                this._favoritedItems = items;
+                this._rssItems.forEach(item=>{
+                    var bFound = false;
+                    items.forEach(i=>{
+                        if(item.uuid==i.uuid){
+                            bFound = true;
+                        }
+                    });
+                    item['favorited'] = bFound;
+                });
                 if(cb) cb();
             });
         }
