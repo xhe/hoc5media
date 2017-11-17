@@ -5,11 +5,11 @@
   "repository": "<fill-your-repository-here>",
   "nativescript": {
     "id": "org.hoc5.media",
-    "tns-ios": {
-      "version": "3.2.0"
-    },
     "tns-android": {
       "version": "3.2.0"
+    },
+    "tns-ios": {
+      "version": "3.4.0-2017-11-9-1"
     }
   },
   "dependencies": {

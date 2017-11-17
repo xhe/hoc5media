@@ -81,9 +81,9 @@
 
                         <StackLayout dock="right"  orientation='horizontal' visibility="{{ rssType=='qt' ? 'visible':'hidden'}}">
                             <!-- favorite -->
-                            <Label text="&#xf15f;" marginLeft="10" [visibility]="favorited(item)?'visible':'collapse'" class="material-icon favorite red"></Label>
+                            <Label text="&#xf15f;" marginLeft="10" [visibility]="(favorited(item) || item['favorited'])?'visible':'collapse'" class="material-icon favorite red"></Label>
                             <!-- favorite-outline -->
-                            <Label text="&#xf15e;" marginLeft="10" [visibility]="favorited(item)?'collapse':'visible'" class="material-icon favorite"></Label>
+                            <Label text="&#xf15e;" marginLeft="10" [visibility]="(favorited(item) || item['favorited'])?'collapse':'visible'" class="material-icon favorite"></Label>
 
                             <!-- note -->
                             <Label text="&#xf263;" marginLeft="10" [visibility]="noted(item)?'visible':'collapse'" class="material-icon black red"></Label>
@@ -104,17 +104,17 @@
             <GridLayout *tkListItemSwipeTemplate columns="*, auto" class="gridLayoutLayout" >
                 <GridLayout columns="*, *, *" col="1" id="right-stack" height="100%">
 
-                    <StackLayout col="0" class="emailGridLayout" (tap)="onRightSwipeClick($event)" id="btnEmailShare">
+                    <StackLayout col="0" class="emailGridLayout" (tap)="onRightSwipeClick($event)">
                         <Label [text]="trans('Email', '邮件' )" class="swipetemplateLabel" verticalAlignment="center" horizontalAlignment="center"></Label>
                         <Label text="&#xf15a;" class="material-icon emailIcon"></Label>
                     </StackLayout>
 
-                    <StackLayout col="1" class="noteGridLayout" (tap)="onRightSwipeClick($event)" id="btnNote">
+                    <StackLayout col="1" class="noteGridLayout" (tap)="onRightSwipeClick($event)">
                         <Label [text]="trans('Note', '笔记' )" class="swipetemplateLabel" verticalAlignment="center" horizontalAlignment="center"></Label>
                         <Label text="&#xf263;" class="material-icon"></Label>
                     </StackLayout>
 
-                    <StackLayout col="2" class="favoriteGridLayout" (tap)="onRightSwipeClick($event)" id="btnFavorite">
+                    <StackLayout col="2" class="favoriteGridLayout" (tap)="onRightSwipeClick($event)">
                         <Label [text]="trans('Favorite', '喜爱' )" text="" class="swipetemplateLabel" verticalAlignment="center" horizontalAlignment="center"></Label>
                         <Label text="&#xf15f;" class="material-icon favoriteIcon"></Label>
                     </StackLayout>

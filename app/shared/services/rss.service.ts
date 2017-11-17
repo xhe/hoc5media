@@ -223,7 +223,7 @@ export class RssService {
             }
             this.customDbService.updateCustomItemFor(uuid, 'favorite', favorite, result=>{
                 if(cb)
-                cb();
+                cb(favorite);
             });
         });
 

@@ -245,22 +245,24 @@ export class RssListComponent implements OnInit, AfterViewInit {
             let uuid = this.rssItems[index].uuid;
             this.rssService.setItem(this.rssItems[index]);
 
-            if(args.object.id=='btnFavorite'){
-                this.rssService.favoriteItem(uuid, ()=>{
+            if(args.object.class=='favoriteGridLayout'){
+                this.rssService.favoriteItem(uuid, (favorited)=>{
+                    this.rssItems[index]['favorited'] = favorited;
                     //update favorited items here
-                    this._updateFavoritedItems();
+                    this._updateFavoritedItems( ()=>{
+                        console.log("Button clicked: " + args.object.id + " for item with index: " + index);
+                        this.listViewComponent.listView.notifySwipeToExecuteFinished();
+                        //this.listViewComponent.listView.items[index].refresh();
+                    } );
                 });
-                console.log("Button clicked: " + args.object.id + " for item with index: " + index);
-                this.listViewComponent.listView.notifySwipeToExecuteFinished();
-
-            }else if(args.object.id=='btnNote'){
+            }else if(args.object.class=='noteGridLayout'){
                 console.log("write note for it");
                 //now go to note page here
                 this.router.navigate(['rssnote']);
                 console.log("Button clicked: " + args.object.id + " for item with index: " + index);
                 this.listViewComponent.listView.notifySwipeToExecuteFinished();
 
-            }else if(args.object.id=='btnEmailShare'){
+            }else if(args.object.class=='emailGridLayout'){
                 this.rssService.retrieveRssItemFor('qt', index, item => {
 
                     console.log("Email share for it");
@@ -273,10 +275,11 @@ export class RssListComponent implements OnInit, AfterViewInit {
         }
 
         private _updateFavoritedItems(cb=null){
+
+            
+
             console.log( '_updateFavoritedItems ');
             this.rssService.getAllMyFavoritedItemSimplified(this.rssType, items=>{
-                console.log('favorited items are =>');
-                console.log(JSON.stringify(items));
                 this._favoritedItems = items;
                 if(cb) cb();
             });
