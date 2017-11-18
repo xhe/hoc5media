@@ -1,3 +1,13 @@
 having to run
 "pod repo update"
 after installing nativescript-iqkeyboardmanager
+
+1. tns platform add ios@next
+this makes sure no memory leak
+
+cd platform/ios
+run pod update instead of pod install beacuse pod install check only existing pod and pod update reinstall all pods.
+
+2. run tns prepare ios --release brefore ios release, this will get rid oerror
+
+or run: tns publish ios - DO NOT USE THIS ONE, it is not prod mode at all
