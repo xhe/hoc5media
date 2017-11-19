@@ -15,13 +15,11 @@ import {Page} from 'ui/page';
 
 import * as htmlViewModule from "tns-core-modules/ui/html-view";
 
-declare var AVAudioSession, AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions;
+// declare var AVAudioSession, AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions;
+// //Below is used for ios background running mode
+// let setCategoryRes =
+//     AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
 
-if(app.ios){
-    //Below is used for ios background running mode
-    let setCategoryRes =
-    AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
-}
 
 @Component({
     moduleId: module.id,

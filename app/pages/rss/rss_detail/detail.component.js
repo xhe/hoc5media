@@ -10,10 +10,10 @@ var router_2 = require("@angular/router");
 var timer = require("timer");
 var nativescript_audio_1 = require("nativescript-audio");
 var page_1 = require("ui/page");
-if (app.ios) {
-    //Below is used for ios background running mode
-    var setCategoryRes = AVAudioSession.sharedInstance().setCategoryWithOptionsError(AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
-}
+// declare var AVAudioSession, AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions;
+// //Below is used for ios background running mode
+// let setCategoryRes =
+//     AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
 var RssDetailComponent = (function () {
     function RssDetailComponent(router, activatedRoute, rssService, page) {
         var _this = this;

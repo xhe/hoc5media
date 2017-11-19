@@ -203,15 +203,15 @@ var RssListComponent = (function () {
         this.rssService.setItem(this.rssItems[index]);
         if (args.object.class == 'favoriteGridLayout') {
             this.rssService.favoriteItem(uuid, function (favorited) {
-                _this.rssItems[index]['favorited'] = favorited;
-                _this.listViewComponent.listView.notifySwipeToExecuteFinished();
+                // this.rssItems[index]['favorited'] = favorited;
+                // this.listViewComponent.listView.notifySwipeToExecuteFinished();
                 //
                 // //update favorited items here
-                // this._updateFavoritedItems( ()=>{
-                //     console.log("Button clicked: " + args.object.id + " for item with index: " + index);
-                //     this.listViewComponent.listView.notifySwipeToExecuteFinished();
-                //     //this.listViewComponent.listView.items[index].refresh();
-                // } );
+                _this._updateFavoritedItems(function () {
+                    console.log("Button clicked: " + args.object.id + " for item with index: " + index);
+                    _this.listViewComponent.listView.notifySwipeToExecuteFinished();
+                    //this.listViewComponent.listView.items[index].refresh();
+                });
             });
         }
         else if (args.object.class == 'noteGridLayout') {
@@ -235,23 +235,23 @@ var RssListComponent = (function () {
         var _this = this;
         if (cb === void 0) { cb = null; }
         console.log('_updateFavoritedItems ');
-        // this.rssService.getAllMyFavoritedItemSimplified(this.rssType, items=>{
-        //     this._favoritedItems = items;
-        //     if(cb) cb();
-        // });
         this.rssService.getAllMyFavoritedItemSimplified(this.rssType, function (items) {
-            _this._rssItems.forEach(function (item) {
-                var bFound = false;
-                items.forEach(function (i) {
-                    if (item.uuid == i.uuid) {
-                        bFound = true;
-                    }
-                });
-                item['favorited'] = bFound;
-            });
+            _this._favoritedItems = items;
             if (cb)
                 cb();
         });
+        // this.rssService.getAllMyFavoritedItemSimplified(this.rssType, items=>{
+        //     this._rssItems.forEach(item=>{
+        //         var bFound = false;
+        //         items.forEach(i=>{
+        //             if(item.uuid==i.uuid){
+        //                 bFound = true;
+        //             }
+        //         });
+        //         item['favorited'] = bFound;
+        //     });
+        //     if(cb) cb();
+        // });
     };
     RssListComponent.prototype._updateNotedItems = function (cb) {
         var _this = this;

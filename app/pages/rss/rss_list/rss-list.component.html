@@ -81,9 +81,9 @@
 
                         <StackLayout dock="right"  orientation='horizontal' visibility="{{ rssType=='qt' ? 'visible':'hidden'}}">
                             <!-- favorite -->
-                            <Label text="&#xf15f;" marginLeft="10" [visibility]="item['favorited']?'visible':'collapse'" class="material-icon favorite red"></Label>
+                            <Label text="&#xf15f;" marginLeft="10" [visibility]="favorited(item)?'visible':'collapse'" class="material-icon favorite red"></Label>
                             <!-- favorite-outline -->
-                            <Label text="&#xf15e;" marginLeft="10" [visibility]="item['favorited']?'collapse':'visible'" class="material-icon favorite"></Label>
+                            <Label text="&#xf15e;" marginLeft="10" [visibility]="favorited(item)?'collapse':'visible'" class="material-icon favorite"></Label>
 
                             <!-- note -->
                             <Label text="&#xf263;" marginLeft="10" [visibility]="noted(item)?'visible':'collapse'" class="material-icon black red"></Label>

@@ -11,3 +11,9 @@ run pod update instead of pod install beacuse pod install check only existing po
 2. run tns prepare ios --release brefore ios release, this will get rid oerror
 
 or run: tns publish ios - DO NOT USE THIS ONE, it is not prod mode at all
+
+3. Generate IPA file, using product->
+
+Android:
+key password: hoc5media
+tns build android --release --key-store-path ./hoc5media-release-key.jks --key-store-password hoc5media --key-store-alias hoc5media --key-store-alias-password hoc5media

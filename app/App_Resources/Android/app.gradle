@@ -8,7 +8,7 @@
 android {
   defaultConfig {
     generatedDensities = []
-    applicationId = "org.nativescript.hoc5media"
+    applicationId = "net.hoc5.media"
   }
   aaptOptions {
     additionalParameters "--no-version-vectors"
