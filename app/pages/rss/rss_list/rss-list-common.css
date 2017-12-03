@@ -134,3 +134,23 @@ button {
 .sideLightGrayLabel {
 	background-color: lightgray;
 }
+
+.wideLabel{
+	width: 78%;
+}
+.narrowLabel{
+	width: 22%;
+}
+.fullWidth{
+	width: 100%;
+}
+.searchTitle{
+	width: 100%;
+	text-align: center;
+	padding-top: 5px;
+	margin-bottom: 15px;
+}
+.btnHalf{
+	width: 40%;
+	text-align: center;
+}
