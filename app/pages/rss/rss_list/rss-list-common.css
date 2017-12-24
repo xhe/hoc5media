@@ -9,7 +9,9 @@ StackLayout {
 .caption .content {
 
 }
-
+.dockRight{
+	margin-right: 5px;
+}
 .itemBlock .title {
 	font-weight: bold;
 }
@@ -75,6 +77,11 @@ StackLayout {
 }
 
 .emailGridLayout{
+	background-color: orange;
+    padding: 16;
+	text-align: center;
+}
+.playGridLayout{
 	background-color: orange;
     padding: 16;
 	text-align: center;

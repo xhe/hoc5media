@@ -10,15 +10,10 @@
 
 				<Button col="0" row="0" text={{btnTitle}} (tap)="togglePlay()" visibility="{{loaded ? 'visible':'hidden'}}" class='btn btn-primary'></Button>
 				<ActivityIndicator visibility="{{loaded ? 'hidden':'visible'}}"  col="0" row="0" busy="true" width="100" height="50" class="activity-indicator"></ActivityIndicator>
-
-				<!-- <Label col="1" row="0" width="50%" visibility="{{totalLength_s ? 'visible':'hidden'}}" [text]="trans('Total Length: ','长度：') + totalLength_s" class='lblProgress'></Label> -->
-
-
 				<Label col="1" row="0" width="50%" text="{{currentTime_s}} / {{totalLength_s}} " class='lblProgress'></Label>
 			</GridLayout>
 
-			<Progress [value]="progressValue" height="20" maxValue="100" class="m-20"></Progress>
-
+			<Slider minValue=0 maxValue="100" [value]="progressValue" (valueChange)="onSliderValueChange($event)"></Slider>
 
 		</StackLayout>
 
@@ -29,8 +24,8 @@
 				<Button [text]="trans('scripture','经文')" (tap)="show('scripture')" class='btn' [ngClass]="{'btn-primary':showType==='scripture', 'inactive': showType!=='scripture'}" ></Button>
 				<Button [text]="trans('Share','分享')" (tap)="show('share')" class='btn' [ngClass]="{'btn-primary':showType==='share', 'inactive': showType!=='share'}"></Button>
 				<Button [text]="trans('Note','笔记')" (tap)="show('note')" class='btn' [ngClass]="{'btn-primary':showType==='note', 'inactive': showType!=='note'}"></Button>
-
 			</StackLayout>
+
 			<ScrollView  orientation="vertical" visibility="{{ showType==='scripture' ? 'visible' : 'collapse'}}" sdkExampleTitle sdkToggleNavButton>
 				<HtmlView [html]="(item && item.scripture)?item.scripture:''" ></HtmlView>
 			</ScrollView>

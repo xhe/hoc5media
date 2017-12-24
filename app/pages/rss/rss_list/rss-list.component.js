@@ -192,25 +192,26 @@ var RssListComponent = (function () {
         var swipeLimits = args.data.swipeLimits;
         var swipeView = args['object'];
         var rightItem = swipeView.getViewById('right-stack');
+        var leftItem = swipeView.getViewById('left-stack');
         swipeLimits.right = rightItem.getMeasuredWidth();
-        swipeLimits.left = 0;
-        swipeLimits.threshold = args['mainView'].getMeasuredWidth() * 0.2; // 20% of whole width
+        swipeLimits.left = leftItem.getMeasuredWidth();
+        swipeLimits.threshold = args['mainView'].getMeasuredWidth() * 0.1; // 20% of whole width
     };
     RssListComponent.prototype.onRightSwipeClick = function (args) {
         var _this = this;
         var index = this.listViewComponent.listView.items.indexOf(args.object.bindingContext);
         var uuid = this.rssItems[index].uuid;
         this.rssService.setItem(this.rssItems[index]);
-        if (args.object.class == 'favoriteGridLayout') {
+        if (args.object.class == 'playGridLayout') {
+            var url = 'rss/' + this.rssType + '/' + index;
+            this.router.navigate([url]);
+            this.listViewComponent.listView.notifySwipeToExecuteFinished();
+        }
+        else if (args.object.class == 'favoriteGridLayout') {
             this.rssService.favoriteItem(uuid, function (favorited) {
-                // this.rssItems[index]['favorited'] = favorited;
-                // this.listViewComponent.listView.notifySwipeToExecuteFinished();
-                //
-                // //update favorited items here
                 _this._updateFavoritedItems(function () {
                     console.log("Button clicked: " + args.object.id + " for item with index: " + index);
                     _this.listViewComponent.listView.notifySwipeToExecuteFinished();
-                    //this.listViewComponent.listView.items[index].refresh();
                 });
             });
         }

@@ -232,9 +232,10 @@ export class RssListComponent implements OnInit, AfterViewInit {
             var swipeLimits = args.data.swipeLimits;
             var swipeView = args['object'];
             var rightItem = swipeView.getViewById<View>('right-stack');
+            var leftItem = swipeView.getViewById<View>('left-stack');
             swipeLimits.right = rightItem.getMeasuredWidth();
-            swipeLimits.left = 0;
-            swipeLimits.threshold = args['mainView'].getMeasuredWidth() * 0.2; // 20% of whole width
+            swipeLimits.left = leftItem.getMeasuredWidth();
+            swipeLimits.threshold = args['mainView'].getMeasuredWidth() * 0.1; // 20% of whole width
         }
 
 
@@ -245,16 +246,16 @@ export class RssListComponent implements OnInit, AfterViewInit {
             let uuid = this.rssItems[index].uuid;
             this.rssService.setItem(this.rssItems[index]);
 
-            if(args.object.class=='favoriteGridLayout'){
+            if(args.object.class=='playGridLayout'){
+                var url = 'rss/' + this.rssType + '/' + index;
+                this.router.navigate([url]);
+                this.listViewComponent.listView.notifySwipeToExecuteFinished();
+
+            }else if(args.object.class=='favoriteGridLayout'){
                 this.rssService.favoriteItem(uuid, (favorited)=>{
-                    // this.rssItems[index]['favorited'] = favorited;
-                    // this.listViewComponent.listView.notifySwipeToExecuteFinished();
-                    //
-                    // //update favorited items here
                     this._updateFavoritedItems( ()=>{
                         console.log("Button clicked: " + args.object.id + " for item with index: " + index);
                         this.listViewComponent.listView.notifySwipeToExecuteFinished();
-                        //this.listViewComponent.listView.items[index].refresh();
                     } );
                 });
             }else if(args.object.class=='noteGridLayout'){

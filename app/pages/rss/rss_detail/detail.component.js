@@ -10,7 +10,6 @@ var router_2 = require("@angular/router");
 var timer = require("timer");
 var nativescript_audio_1 = require("nativescript-audio");
 var page_1 = require("ui/page");
-// declare var AVAudioSession, AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions;
 // //Below is used for ios background running mode
 // let setCategoryRes =
 //     AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
@@ -51,53 +50,53 @@ var RssDetailComponent = (function () {
                         }
                     });
                     _this.pageLoaded = true;
-                    _this._player.initFromUrl({
-                        audioFile: _this.item.enclosure_link,
-                        loop: false,
-                        completeCallback: _this._trackComplete.bind(_this),
-                        errorCallback: _this._trackError.bind(_this),
-                        infoCallback: _this._infoCallback.bind(_this)
-                    }).then(function () {
-                        _this._player.getAudioTrackDuration().then(function (duration) {
-                            _this._player.volume = 1;
-                            // iOS: duration is in seconds
-                            // Android: duration is in milliseconds
-                            var duration_i = parseInt(duration);
-                            if (_this.platform == 'android') {
-                                duration_i = duration_i / 1000;
-                            }
-                            _this.totalLength = duration_i;
-                            _this.totalLength_s = _this._convertTS(duration_i);
-                            _this.loaded = true;
-                            _this.showPlayBtn = 'visible';
-                            _this.timerId = timer.setInterval(function () {
-                                var currentTime = Math.floor(_this._player.currentTime);
-                                if (_this.platform == 'android') {
-                                    currentTime = currentTime / 1000;
-                                }
-                                console.log(currentTime + ' --- ' + _this.totalLength);
-                                if (currentTime < _this.totalLength - 1) {
-                                    console.log('pos 1 ');
-                                    _this.currentTime = currentTime;
-                                    _this.currentTime_s = _this._convertTS(currentTime);
-                                    _this.progressValue = (_this.currentTime / _this.totalLength) * 100;
-                                }
-                                else {
-                                    console.log(' pos 2 ');
-                                    //timer.clearInterval(this.timerId);
-                                    // this._player.seekTo(0);
-                                    // this._player.pause();
-                                    _this.btnTitle = _this.rssService.trans("Start", "开始");
-                                }
-                            }, 1000);
-                            _this.audioInitiated = true;
-                        });
-                    });
+                    _this._initPlayer();
                 });
             });
         }, 0);
-        this.btnTitle = this.rssService.trans("Start", "开始");
     }
+    RssDetailComponent.prototype._initPlayer = function () {
+        var _this = this;
+        this._player.initFromUrl({
+            audioFile: this.item.enclosure_link,
+            loop: false,
+            completeCallback: this._trackComplete.bind(this),
+            errorCallback: this._trackError.bind(this),
+            infoCallback: this._infoCallback.bind(this)
+        }).then(function () {
+            _this._player.getAudioTrackDuration().then(function (duration) {
+                _this._player.volume = 1;
+                // iOS: duration is in seconds
+                // Android: duration is in milliseconds
+                var duration_i = parseInt(duration);
+                if (_this.platform == 'android') {
+                    duration_i = duration_i / 1000;
+                }
+                _this.totalLength = duration_i;
+                _this.totalLength_s = _this._convertTS(duration_i);
+                _this.loaded = true;
+                _this.showPlayBtn = 'visible';
+                //we need to clear current timeId first
+                if (!_this.timerId) {
+                    _this.timerId = timer.setInterval(function () {
+                        var currentTime = 0;
+                        if (_this._player) {
+                            currentTime = Math.floor(_this._player.currentTime);
+                        }
+                        if (_this.platform == 'android') {
+                            currentTime = currentTime / 1000;
+                        }
+                        _this.currentTime = currentTime;
+                        _this.currentTime_s = _this._convertTS(currentTime);
+                        _this.progressValue = (_this.currentTime / _this.totalLength) * 100;
+                    }, 1000);
+                    console.log('createed timer ', _this.timerId);
+                }
+                _this.audioInitiated = true;
+            });
+        });
+        this.btnTitle = this.rssService.trans("Start", "开始");
+    };
     RssDetailComponent.prototype._updateRssItem = function () {
         var _this = this;
         //now, let's fetch custom note
@@ -110,12 +109,16 @@ var RssDetailComponent = (function () {
         }
     };
     RssDetailComponent.prototype.ngOnDestroy = function () {
+        console.log('clearning ', this.timerId);
         timer.clearInterval(this.timerId);
         if (this.audioInitiated) {
             console.log('distroy the player');
             this._player.dispose();
             this._player = null;
         }
+    };
+    RssDetailComponent.prototype.unLoaded = function () {
+        console.log('player.component unloaded');
     };
     RssDetailComponent.prototype.togglePlay = function () {
         if (this._player.isAudioPlaying()) {
@@ -145,8 +148,18 @@ var RssDetailComponent = (function () {
     };
     RssDetailComponent.prototype.onSliderValueChange = function (args) {
         var slider = args.object;
-        console.log('value changed -->');
-        //this._player.seekTo( this.totalLength*slider.value/100 );
+        var seekValue = slider.value;
+        var dif = 1;
+        var progressValue = this.progressValue;
+        //android is in milliseconds
+        if (this.platform == 'android') {
+            seekValue = seekValue * 1000;
+            progressValue = progressValue * 1000;
+            dif = dif * 1000;
+        }
+        if (Math.abs(seekValue - progressValue) > dif) {
+            this._player.seekTo(this.totalLength * seekValue / 100);
+        }
     };
     RssDetailComponent.prototype._infoCallback = function (args) {
     };
@@ -156,9 +169,7 @@ var RssDetailComponent = (function () {
         // iOS only: flag indicating if completed succesfully
         console.log('whether song play completed successfully:', args.flag);
         this._player.dispose().then(function () {
-            _this._player.seekTo(0);
-            _this._player.pause();
-            _this.btnTitle = _this.rssService.trans("Start", "开始");
+            _this._initPlayer();
         });
     };
     RssDetailComponent.prototype._trackError = function (args) {

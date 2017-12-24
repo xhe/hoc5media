@@ -8,7 +8,6 @@ import {Router} from "@angular/router";
 
 //https://github.com/bradmartin/nativescript-audio
 var timer = require("timer");
-
 import { TNSPlayer } from 'nativescript-audio';
 import { Progress } from "ui/progress";
 import {Page} from 'ui/page';
@@ -16,7 +15,7 @@ import {Page} from 'ui/page';
 import * as htmlViewModule from "tns-core-modules/ui/html-view";
 
 declare var AVAudioSession, AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions;
-//Below is used for ios background running mode
+// //Below is used for ios background running mode
 let setCategoryRes =
     AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
 
@@ -53,6 +52,7 @@ export class RssDetailComponent {
     lastChangeTS:number;
 
     pageLoaded: boolean;
+    parent: null;
 
     constructor(private router: Router,
         private activatedRoute: ActivatedRoute,
@@ -95,67 +95,57 @@ export class RssDetailComponent {
                                 this.customItem = customItems[0];
                             }
                         });
-
                         this.pageLoaded = true;
-
-                        this._player.initFromUrl({
-                            audioFile: this.item.enclosure_link,
-                            loop: false,
-                            completeCallback: this._trackComplete.bind(this),
-                            errorCallback: this._trackError.bind(this),
-                            infoCallback: this._infoCallback.bind(this)
-                        }).then(() => {
-                            this._player.getAudioTrackDuration().then((duration) => {
-                                this._player.volume = 1;
-                                // iOS: duration is in seconds
-                                // Android: duration is in milliseconds
-                                var duration_i: number = parseInt(duration);
-
-                                if (this.platform == 'android') {
-                                    duration_i = duration_i / 1000;
-                                }
-
-                                this.totalLength = duration_i;
-                                this.totalLength_s = this._convertTS(duration_i);
-
-                                this.loaded = true;
-                                this.showPlayBtn = 'visible';
-
-                                this.timerId = timer.setInterval(() => {
-                                    var currentTime: number = Math.floor(this._player.currentTime);
-                                    if (this.platform == 'android') {
-                                        currentTime = currentTime / 1000;
-                                    }
-                                    console.log(currentTime+' --- '+this.totalLength);
-                                    if (currentTime < this.totalLength-1) {
-                                        console.log('pos 1 ');
-                                        this.currentTime = currentTime;
-                                        this.currentTime_s = this._convertTS(currentTime);
-                                        this.progressValue = (this.currentTime / this.totalLength) * 100;
-                                    } else {
-                                        console.log(' pos 2 ');
-                                        //timer.clearInterval(this.timerId);
-                                        // this._player.seekTo(0);
-                                        // this._player.pause();
-                                        this.btnTitle = this.rssService.trans("Start", "开始");
-                                    }
-                                 }, 1000);
-
-
-                                this.audioInitiated = true;
-                            });
-
-
-
-                        });
-
+                        this._initPlayer();
                     });
                 });
             }, 0);
 
+        }
 
+        _initPlayer(){
+            this._player.initFromUrl({
+                audioFile: this.item.enclosure_link,
+                loop: false,
+                completeCallback: this._trackComplete.bind(this),
+                errorCallback: this._trackError.bind(this),
+                infoCallback: this._infoCallback.bind(this)
+            }).then(() => {
+                this._player.getAudioTrackDuration().then((duration) => {
+                    this._player.volume = 1;
+                    // iOS: duration is in seconds
+                    // Android: duration is in milliseconds
+                    var duration_i: number = parseInt(duration);
 
+                    if (this.platform == 'android') {
+                        duration_i = duration_i / 1000;
+                    }
 
+                    this.totalLength = duration_i;
+                    this.totalLength_s = this._convertTS(duration_i);
+
+                    this.loaded = true;
+                    this.showPlayBtn = 'visible';
+
+                    //we need to clear current timeId first
+                    if(!this.timerId){
+                        this.timerId = timer.setInterval(() => {
+                            var currentTime: number = 0;
+                            if(this._player){
+                                currentTime = Math.floor(this._player.currentTime);
+                            }
+                            if (this.platform == 'android') {
+                                currentTime = currentTime / 1000;
+                            }
+                            this.currentTime = currentTime;
+                            this.currentTime_s = this._convertTS(currentTime);
+                            this.progressValue = (this.currentTime / this.totalLength) * 100;
+                         }, 1000);
+                         console.log('createed timer ', this.timerId);
+                    }
+                    this.audioInitiated = true;
+                });
+            });
             this.btnTitle = this.rssService.trans("Start", "开始");
         }
 
@@ -171,6 +161,7 @@ export class RssDetailComponent {
         }
 
         ngOnDestroy() {
+            console.log('clearning ', this.timerId);
             timer.clearInterval(this.timerId);
 
             if (this.audioInitiated){
@@ -179,6 +170,9 @@ export class RssDetailComponent {
                 this._player = null;
             }
 
+        }
+        public unLoaded(){
+              console.log('player.component unloaded');
         }
 
         togglePlay() {
@@ -213,9 +207,20 @@ export class RssDetailComponent {
 
         public onSliderValueChange(args) {
             let slider = <Slider>args.object;
-            console.log('value changed -->');
-            //this._player.seekTo( this.totalLength*slider.value/100 );
+            let seekValue = slider.value;
+            let dif = 1;
+            let progressValue = this.progressValue;
+            //android is in milliseconds
+            if (this.platform == 'android') {
+                seekValue = seekValue*1000;
+                progressValue=progressValue*1000;
+                dif = dif *1000;
+            }
+            if( Math.abs(seekValue-progressValue)>dif){
+                this._player.seekTo( this.totalLength*seekValue/100 );
+            }
         }
+
 
         private _infoCallback(args: any) {
         }
@@ -226,12 +231,11 @@ export class RssDetailComponent {
             console.log('whether song play completed successfully:', args.flag);
             this._player.dispose().then(
                 ()=>{
-                    this._player.seekTo(0);
-                    this._player.pause();
-                    this.btnTitle = this.rssService.trans("Start", "开始");
+                    this._initPlayer();
                 }
             );
         }
+
         private _trackError(args: any) {
             console.log('reference back to player:', args.player);
             console.log('the error:', args.error);
