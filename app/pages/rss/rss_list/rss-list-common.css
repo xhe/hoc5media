@@ -10,7 +10,7 @@ StackLayout {
 
 }
 .dockRight{
-	margin-right: 5px;
+	margin-right: 2px;
 }
 .itemBlock .title {
 	font-weight: bold;

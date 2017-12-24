@@ -77,9 +77,9 @@
             <ng-template tkListItemTemplate let-item="item" let-odd="odd" let-even="even">
                 <StackLayout class='itemBlock' [class.odd]="odd" [class.even]="even"  class="itemBlock">
                     <Label [text]="trans('Todays\'s QT', '今日灵修' )" visibility="{{item.isTodayPublished()? 'visible':'collapse'}}" class='todayqt'></Label>
-                    <DockLayout stretchLastChild="false" class="dockRight">
+                    <DockLayout stretchLastChild="false">
 
-                        <StackLayout dock="right"  orientation='horizontal' visibility="{{ rssType=='qt' ? 'visible':'hidden'}}">
+                        <StackLayout dock="right" class="dockRight" orientation='horizontal' visibility="{{ rssType=='qt' ? 'visible':'hidden'}}">
                             <!-- favorite -->
                             <Label text="&#xf15f;" marginLeft="10" [visibility]="favorited(item)?'visible':'collapse'" class="material-icon favorite red"></Label>
                             <!-- favorite-outline -->
