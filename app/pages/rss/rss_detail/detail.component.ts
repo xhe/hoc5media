@@ -19,6 +19,7 @@ declare var AVAudioSession, AVAudioSessionCategoryPlayAndRecord, AVAudioSessionC
 let setCategoryRes =
     AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
 
+import {DetailService} from './detail.service';
 
 @Component({
     moduleId: module.id,
@@ -57,7 +58,8 @@ export class RssDetailComponent {
     constructor(private router: Router,
         private activatedRoute: ActivatedRoute,
         private rssService: RssService,
-        private page:Page) {
+        private page:Page,
+        private detailService:DetailService) {
 
             this.loaded = false;
             this.pageLoaded = false;
@@ -86,9 +88,7 @@ export class RssDetailComponent {
                     this.rssItemIndex = params['index'];
                     console.log( 'indetail page: ', this.rssType, this.rssItemIndex);
                     this.rssService.retrieveRssItemFor(this.rssType, this.rssItemIndex, item => {
-                        console.log('item is:');
                         this.item = item;
-
                         //now, let's fetch custom note
                         this.rssService.getNotedItemFor(item.uuid, customItems=>{
                             if(customItems.length>0){
@@ -127,22 +127,19 @@ export class RssDetailComponent {
                     this.loaded = true;
                     this.showPlayBtn = 'visible';
 
-                    //we need to clear current timeId first
-                    if(!this.timerId){
-                        this.timerId = timer.setInterval(() => {
-                            var currentTime: number = 0;
-                            if(this._player){
-                                currentTime = Math.floor(this._player.currentTime);
-                            }
-                            if (this.platform == 'android') {
-                                currentTime = currentTime / 1000;
-                            }
-                            this.currentTime = currentTime;
-                            this.currentTime_s = this._convertTS(currentTime);
-                            this.progressValue = (this.currentTime / this.totalLength) * 100;
-                         }, 1000);
-                         console.log('createed timer ', this.timerId);
-                    }
+                    this.detailService.onInterval(()=>{
+                        var currentTime: number = 0;
+                        if(this._player){
+                            currentTime = Math.floor(this._player.currentTime);
+                        }
+                        if (this.platform == 'android') {
+                            currentTime = currentTime / 1000;
+                        }
+                        this.currentTime = currentTime;
+                        this.currentTime_s = this._convertTS(currentTime);
+                        this.progressValue = (this.currentTime / this.totalLength) * 100;
+                        console.log('curentTime', this.currentTime, 'progressValue', this.progressValue);
+                    });
                     this.audioInitiated = true;
                 });
             });
@@ -161,16 +158,14 @@ export class RssDetailComponent {
         }
 
         ngOnDestroy() {
-            console.log('clearning ', this.timerId);
-            timer.clearInterval(this.timerId);
-
+            this.detailService.clearInterval();
             if (this.audioInitiated){
                 console.log('distroy the player');
                 this._player.dispose();
                 this._player = null;
             }
-
         }
+
         public unLoaded(){
               console.log('player.component unloaded');
         }

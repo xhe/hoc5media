@@ -17,6 +17,8 @@ import { AppComponent } from "./app.component";
 import { routes, navigatableComponents, entryComponents } from "./app.routing";
 import {SharedModule} from "./shared/shared.module";
 
+import {DetailService} from './pages/rss/rss_detail/detail.service';
+
 @NgModule({
     imports: [NativeScriptModule, NativeScriptFormsModule, NativeScriptHttpModule,
         NativeScriptRouterModule,
@@ -28,7 +30,8 @@ import {SharedModule} from "./shared/shared.module";
     declarations: [AppComponent, ...navigatableComponents],
     bootstrap: [AppComponent],
     entryComponents: [...entryComponents],
-    schemas: [ NO_ERRORS_SCHEMA ]
+    schemas: [ NO_ERRORS_SCHEMA ],
+    providers: [DetailService]
 })
 export class AppModule {
 

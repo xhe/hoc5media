@@ -13,13 +13,15 @@ var page_1 = require("ui/page");
 // //Below is used for ios background running mode
 // let setCategoryRes =
 //     AVAudioSession.sharedInstance().setCategoryWithOptionsError( AVAudioSessionCategoryPlayAndRecord, AVAudioSessionCategoryOptions.DefaultToSpeaker);
+var detail_service_1 = require("./detail.service");
 var RssDetailComponent = (function () {
-    function RssDetailComponent(router, activatedRoute, rssService, page) {
+    function RssDetailComponent(router, activatedRoute, rssService, page, detailService) {
         var _this = this;
         this.router = router;
         this.activatedRoute = activatedRoute;
         this.rssService = rssService;
         this.page = page;
+        this.detailService = detailService;
         this.loaded = false;
         this.pageLoaded = false;
         this.progressValue = 0;
@@ -41,7 +43,6 @@ var RssDetailComponent = (function () {
                 _this.rssItemIndex = params['index'];
                 console.log('indetail page: ', _this.rssType, _this.rssItemIndex);
                 _this.rssService.retrieveRssItemFor(_this.rssType, _this.rssItemIndex, function (item) {
-                    console.log('item is:');
                     _this.item = item;
                     //now, let's fetch custom note
                     _this.rssService.getNotedItemFor(item.uuid, function (customItems) {
@@ -76,22 +77,19 @@ var RssDetailComponent = (function () {
                 _this.totalLength_s = _this._convertTS(duration_i);
                 _this.loaded = true;
                 _this.showPlayBtn = 'visible';
-                //we need to clear current timeId first
-                if (!_this.timerId) {
-                    _this.timerId = timer.setInterval(function () {
-                        var currentTime = 0;
-                        if (_this._player) {
-                            currentTime = Math.floor(_this._player.currentTime);
-                        }
-                        if (_this.platform == 'android') {
-                            currentTime = currentTime / 1000;
-                        }
-                        _this.currentTime = currentTime;
-                        _this.currentTime_s = _this._convertTS(currentTime);
-                        _this.progressValue = (_this.currentTime / _this.totalLength) * 100;
-                    }, 1000);
-                    console.log('createed timer ', _this.timerId);
-                }
+                _this.detailService.onInterval(function () {
+                    var currentTime = 0;
+                    if (_this._player) {
+                        currentTime = Math.floor(_this._player.currentTime);
+                    }
+                    if (_this.platform == 'android') {
+                        currentTime = currentTime / 1000;
+                    }
+                    _this.currentTime = currentTime;
+                    _this.currentTime_s = _this._convertTS(currentTime);
+                    _this.progressValue = (_this.currentTime / _this.totalLength) * 100;
+                    console.log('curentTime', _this.currentTime, 'progressValue', _this.progressValue);
+                });
                 _this.audioInitiated = true;
             });
         });
@@ -109,8 +107,7 @@ var RssDetailComponent = (function () {
         }
     };
     RssDetailComponent.prototype.ngOnDestroy = function () {
-        console.log('clearning ', this.timerId);
-        timer.clearInterval(this.timerId);
+        this.detailService.clearInterval();
         if (this.audioInitiated) {
             console.log('distroy the player');
             this._player.dispose();
@@ -190,7 +187,8 @@ var RssDetailComponent = (function () {
         __metadata("design:paramtypes", [router_2.Router,
             router_1.ActivatedRoute,
             rss_service_1.RssService,
-            page_1.Page])
+            page_1.Page,
+            detail_service_1.DetailService])
     ], RssDetailComponent);
     return RssDetailComponent;
 }());

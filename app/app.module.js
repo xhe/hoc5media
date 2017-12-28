@@ -15,6 +15,7 @@ var angular_2 = require("nativescript-pro-ui/listview/angular");
 var app_component_1 = require("./app.component");
 var app_routing_1 = require("./app.routing");
 var shared_module_1 = require("./shared/shared.module");
+var detail_service_1 = require("./pages/rss/rss_detail/detail.service");
 var AppModule = (function () {
     function AppModule() {
     }
@@ -30,7 +31,8 @@ var AppModule = (function () {
             declarations: [app_component_1.AppComponent].concat(app_routing_1.navigatableComponents),
             bootstrap: [app_component_1.AppComponent],
             entryComponents: app_routing_1.entryComponents.slice(),
-            schemas: [core_1.NO_ERRORS_SCHEMA]
+            schemas: [core_1.NO_ERRORS_SCHEMA],
+            providers: [detail_service_1.DetailService]
         })
     ], AppModule);
     return AppModule;
