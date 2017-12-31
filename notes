@@ -8,6 +8,7 @@ this makes sure no memory leak
 cd platform/ios
 run pod update instead of pod install beacuse pod install check only existing pod and pod update reinstall all pods.
 
+2. npm run build-ios-bundle (minimize file size)
 2. run tns prepare ios --release brefore ios release, this will get rid oerror
 
 or run: tns publish ios - DO NOT USE THIS ONE, it is not prod mode at all
