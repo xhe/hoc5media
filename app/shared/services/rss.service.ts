@@ -361,7 +361,6 @@ export class RssService {
 
             public retrieveRssItemFor(rssType: string, index: number, cb) {
                 var itemSimplified = this._getRssItemFor(rssType, index);
-
                 if(rssType!='qt'){
                     cb(itemSimplified);
                 }else{

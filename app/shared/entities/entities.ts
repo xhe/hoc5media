@@ -154,10 +154,15 @@ export class Item {
 
             this.link =  (itemData['link'] &&  itemData['link'][0]) ? itemData['link'][0] : "";
             this.pubDate = itemData['pubDate'] ? this._convertDate(itemData['pubDate'][0]) : "";
-            this.uuid = itemData['pubDate'] ? this._generateUUID(itemData['pubDate'][0]) : 0;
+
+            //we first check title, if title contains digits for first 8 characters, we use that as UUID
+            if(/\d+/.test(this.title.substr(0, 8))){
+                this.uuid = parseInt ( this.title.substr(0, 8));
+            }else{
+                this.uuid =  itemData['pubDate'] ? this._generateUUID(itemData['pubDate'][0]) : 0;
+            }
 
             this.duration = (itemData['itunes:duration'] && itemData['itunes:duration'][0]) ? itemData['itunes:duration'][0] : "";
-
             this.enclosure_link = (itemData['enclosure'] && itemData['enclosure'][0] && itemData['enclosure'][0]['$'] && itemData['enclosure'][0]['$']['url'])? itemData['enclosure'][0]['$']['url'] : "";
             this.enclosure_length = (itemData['enclosure'] && itemData['enclosure'][0] &&  itemData['enclosure'][0]['$'] && itemData['enclosure'][0]['$']['length'])? itemData['enclosure'][0]['$']['length'] : "";
             this.enclosure_type = (itemData['enclosure'] &&  itemData['enclosure'][0] &&  itemData['enclosure'][0]['$'] && itemData['enclosure'][0]['$']['type'])? itemData['enclosure'][0]['$']['type'] : "";
@@ -196,7 +201,13 @@ export class Item {
             mms = '' + mm;
         }
         var todayStr = yyyy + "-" + mms + "-" + dds;
-        return this.pubDate === todayStr;
+        var dateToCompare = this.pubDate;
+        if(/\d+/.test(this.title.substr(0,8))){
+            var tmp = this.title.substr(0,8);
+            dateToCompare = tmp.substr(0,4)+'-'+tmp.substr(4,2)+'-'+tmp.substr(6,2);
+        }
+
+        return dateToCompare === todayStr;
     }
 
     _extractScriptUrl(content: string): string {
