@@ -43,6 +43,7 @@ export class RssListComponent implements OnInit, AfterViewInit {
     dateString:string = "";
 
     mode:string;
+    playingMode:string;
 
     public get rssItems(){
         return this._rssItems;
@@ -62,6 +63,7 @@ export class RssListComponent implements OnInit, AfterViewInit {
         this._favoritedItems=[];
         this._notedItems = [];
         this.mode="";
+        this.mode="single";
 
         var _this = this;
         this.page.on(Page.navigatingToEvent, function(){
@@ -83,7 +85,7 @@ export class RssListComponent implements OnInit, AfterViewInit {
 
     public onApplyFilter(){
         this.rssService.searchSimplifiedRssObjectsFor(this.rssType,
-            this.selectedBooks,[this.selectedDateOption, this.selectedDate1, this.selectedDate2], items=>{
+            this.selectedBooks,[this.selectedDateOption, this.selectedDate1, this.selectedDate2], this.playingMode, items=>{
                 this._rssItems = items;
             }
         );
@@ -356,5 +358,13 @@ export class RssListComponent implements OnInit, AfterViewInit {
 
         public systemFixing(){
             this.router.navigate(['rssnote']);
+        }
+
+        public toggleContinuePlaying(){
+            if(this.playingMode=="single"){
+                this.playingMode="continue";
+            }else{
+                this.playingMode="single";
+            }
         }
     }

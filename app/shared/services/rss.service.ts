@@ -31,6 +31,7 @@ export class RssService {
     public pageSize: number;
 
     private item:Item;
+    private playingMode:string;
 
     public setItem(item:Item){
         this.item=item;
@@ -292,8 +293,9 @@ export class RssService {
             }
         }
 
-        public searchSimplifiedRssObjectsFor(rssType: string, bookNames:String[], period:any, cb){
-
+        public searchSimplifiedRssObjectsFor(rssType: string, bookNames:String[], period:any,playingMode:string, cb){
+            this.playingMode = playingMode;
+            
             if(rssType!=='qt'){
                 return this.getRssObjectsFor(rssType, cb);
             }else{

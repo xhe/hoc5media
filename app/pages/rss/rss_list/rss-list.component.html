@@ -25,12 +25,15 @@
             </StackLayout>
             <StackLayout >
                 <Label [text]="trans('Search QT Contents', '搜索每日灵修' )" class="searchTitle"></Label>
-                <Label [text]="selectedBooks.length==0?'By Book': selectedBooks.join(',') " class="sideLabel sideLightGrayLabel fullWidth" (tap)="showBooks()" ></Label>
+                <Label [text]="selectedBooks.length==0?trans('By Book','圣经书目搜索'): selectedBooks.join(',') " class="sideLabel sideLightGrayLabel fullWidth" (tap)="showBooks()" ></Label>
             </StackLayout>
             <StackLayout >
-                <Label [text]="dateString==''?'By Date':dateString" class="sideLabel sideLightGrayLabel fullWidth" (tap)="showDatePicker()"></Label>
+                <Label [text]="dateString==''?trans('By Date','日期搜索'):dateString" class="sideLabel sideLightGrayLabel fullWidth" (tap)="showDatePicker()"></Label>
             </StackLayout>
-
+            <!-- <StackLayout  orientation="horizontal">
+                <Label [text]="trans('Continue Playing', '连续播放' )" class="sideLabel sideLightGrayLabel wideLabel" (tap)="toggleContinuePlaying()"></Label>
+                <Label [text]="playingMode=='single'?'&#xf26a;':'&#xf279;'" (tap)="toggleContinuePlaying()" class="material-icon sideLabel sideLightGrayLabel narrowLabel"></Label>
+            </StackLayout> -->
             <StackLayout orientation="horizontal" >
                 <Label [text]="trans('Apply', '确认')" class="sideLabel sideLightGrayLabel btnHalf" (tap)="onApplyFilter()"></Label>
                 <Label [text]="trans('Cancel', '取消' )" class="sideLabel sideLightGrayLabel leftMargin50 btnHalf" (tap)="onCancelFilter()"></Label>
